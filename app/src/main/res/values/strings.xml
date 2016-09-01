@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">DataBuilding初识</string>
+    <string name="is_student">我是学生</string>
+    <string name="not_student">我不是学生</string>
+    <string name="suffix">呵呵呵</string>
+
+    <string name="hobby">爱好:  </string>
+    <string name="age_plus">年龄加1:  </string>
+    <string name="upper_case">首字母大写:  </string>
+    <string name="view_stub">这是ViewStub部分:  </string>
+    <string name="view_include">这是Include部分:  </string>
+</resources>

@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data class="MainBuilding">
+        <!--只要是在Java中需要导入包的类，这边都需要导入 除java.lang 包里的类-->
+        <!-- alias 设置别名 -->
+        <import
+            alias="UserViewModel"
+            type="com.kuangye.mvvm.UserViewModel"/>
+
+        <import
+            alias="View"
+            type="android.view.View"/>
+
+        <variable
+            name="peopleViewModel"
+            type="com.kuangye.mvvm.PeopleViewModel"/>
+
+        <!--两个对象引用 userViewModel和userNull-->
+        <variable
+            name="userViewModel"
+            type="UserViewModel"/>
+
+        <variable
+            name="userNull"
+            type="UserViewModel"/>
+
+        <variable
+            name="mainActivity"
+            type="com.kuangye.mvvm.MainActivity"/>
+        
+        <import type="android.databinding.ObservableArrayList" />
+        <import type="com.kuangye.mvvm.MyStringUtils" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerPadding="3dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+
+            <!--firstName-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="firstName:"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{userViewModel.firstName}"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
+
+            <!--lastName-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dividerPadding="20dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="lastName:"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{userViewModel.lastName}"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
+
+            <!--在表达式中 @{userNull.firstName}虽然userNull == null
+                那么会为 userNull.firstName 设置 默认值null 而不会NullPointerException
+                （基本类型将赋予默认值如 int为0，引用类型都会赋值null）-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dividerPadding="20dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="user为null时:"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{userNull.firstName}"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
+
+            <!--三元运算-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dividerPadding="20dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="是否是学生:"
+                    android:textSize="20sp"
+                    />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{userViewModel.student ? @string/is_student : @string/not_student}"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
+
+            <!--visibility-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dividerPadding="20dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="只有我是学生时显示:"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我是学生"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    android:visibility="@{userViewModel.student ? View.VISIBLE : View.GONE}"
+                    />
+
+
+            </LinearLayout>
+
+            <!--操作符 ?? 相当于user.firstName != null ? userViewModel.firstName : userViewModel.lastName-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dividerPadding="20dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="操作符 ??的使用"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{userViewModel.firstName ?? userViewModel.lastName}"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    />
+
+
+            </LinearLayout>
+
+            <!--全名-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dividerPadding="20dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="displayName:"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{userViewModel.displayName}"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
+
+            <!--性别-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dividerPadding="20dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="sex:"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{userViewModel.sex}"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
+
+            <!--字符串拼接-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{@string/hobby+userViewModel.hobby["hobby"]}'
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                />
+
+            <!--字符串拼接和算法-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{@string/age_plus+String.valueOf(peopleViewModel.age+1)}'
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                />
+
+            <ViewStub
+                android:id="@+id/view_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/view_stub"
+                />
+
+            <!--include使用时bind的uvm 作为view_include.xml的引用来使用 其值为@{userViewModel}-->
+            <include
+                bind:uvm = "@{userViewModel}"
+                layout="@layout/view_include" />
+
+            <!--ObservableArrayList-->
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{userViewModel.info[0]}'
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                />
+
+            <!--使用类的方法-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{@string/upper_case+MyStringUtils.capitalize(userViewModel.firstName)}'
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                />
+
+            <Button
+                android:id="@+id/btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="变化数据"
+                />
+
+            <!--Activity的变量-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:dividerPadding="20dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="Activity的变量:"
+                    android:textSize="20sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{mainActivity.mName}'
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"
+                    />
+
+            </LinearLayout>
+
+            <!--添加数据-->
+            <Button
+                android:id="@+id/add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="添加数据"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:context="@{peopleViewModel.context}"
+                app:names="@{peopleViewModel.names}"
+                >
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="RecyclerView:"
+                android:textSize="20sp"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
